@@ -45,4 +45,12 @@
         android:layout_height="wrap_content"
         android:text="Бросить монету"
         />
+
+    <!-- Кнопка для открытия истории -->
+    <Button
+        android:id="@+id/historyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Посмотреть историю"
+        android:layout_marginTop="20dp" />
 </LinearLayout>
