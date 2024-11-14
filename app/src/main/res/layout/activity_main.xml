@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="16dp"
+    android:background="#ffffff">
+
+    <!-- Текст для вывода результата (вверху) -->
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Результат: 0 орлов, 0 решек"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:layout_marginBottom="150dp" />
+
+    <!-- Изображение для анимации монеты (по центру экрана) -->
+    <ImageView
+        android:id="@+id/coinImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="100dp"
+        android:src="@drawable/coin_head" />
+
+    <!-- Текстовое поле для ввода количества бросков (внизу) -->
+    <EditText
+        android:id="@+id/inputCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:hint="Введите количество бросков"
+        android:inputType="number"
+        android:padding="48dp"
+        android:gravity="center"/>
+
+    <!-- Кнопка для запуска бросков (под полем ввода) -->
+    <Button
+        android:id="@+id/flipButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Бросить монету"
+        />
+</LinearLayout>
