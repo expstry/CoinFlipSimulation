@@ -24,8 +24,8 @@ class MainActivity : AppCompatActivity() {
     private val tailsDrawableId = R.drawable.coin_tail
     private val handler = Handler(Looper.getMainLooper())
 
-    // История с порядком выпадения
-    private val history = mutableListOf<String>()
+    // История игр: хранит название игры и подробности каждого броска
+    private val gameHistory = mutableListOf<Pair<String, List<String>>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         historyButton.setOnClickListener {
             // Переход в Activity для просмотра истории
             val intent = Intent(this, HistoryActivity::class.java)
-            intent.putStringArrayListExtra("flipHistory", ArrayList(history)) //  полная история
+            intent.putExtra("gameHistory", ArrayList(gameHistory)) // Передаём полную историю
             startActivity(intent)
         }
     }
@@ -64,18 +64,16 @@ class MainActivity : AppCompatActivity() {
                 tailsCount++
                 "Решка"
             }
-            results.add(result)
+            results.add("Бросок $i: $result")
         }
 
-        val resultText = "Результат: $headsCount орлов, $tailsCount решек"
+        val resultText = "Игра: $headsCount орлов, $tailsCount решек"
         this.resultText.text = resultText
 
-        //   результат в историю
-        for (i in results.indices) {
-            history.add("Бросок ${i + 1}: ${results[i]}")
-        }
+        // Сохраняем игру и её результаты в историю
+        gameHistory.add(Pair(resultText, results))
 
-        // анимация монеты
+        // Анимация монеты
         coinImage.setBackgroundResource(R.drawable.coin_flip_animation)
         coinImage.setImageResource(0)
 
@@ -85,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         handler.postDelayed({
             coinAnimation.stop()
             val finalResult = if (headsCount > tailsCount) headsDrawableId else tailsDrawableId
-            coinImage.setBackgroundResource(finalResult)  //  итоговый результат
+            coinImage.setBackgroundResource(finalResult)  // Устанавливаем итоговый результат
         }, (coinAnimation.numberOfFrames * 50).toLong())
     }
 }

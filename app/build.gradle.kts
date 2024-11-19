@@ -55,10 +55,10 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")  // Корутинная библиотека
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // Подключение поддержки AppCompatActivity
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    
+    implementation("androidx.appcompat:appcompat:1.7.0")
 
     // Основные зависимости для Compose
     implementation(libs.androidx.core.ktx)

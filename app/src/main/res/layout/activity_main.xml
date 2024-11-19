@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:padding="16dp"
-    android:background="#ffffff">
+    android:background="#FFFFFF">
 
     <!-- Текст для вывода результата (вверху) -->
     <TextView
