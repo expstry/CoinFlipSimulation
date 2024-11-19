@@ -7,9 +7,12 @@ import android.widget.Button
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 
+
+
 class HistoryActivity : AppCompatActivity() {
 
     private lateinit var clearHistoryButton: Button
+    private lateinit var backButton: Button
     private lateinit var historyListView: ListView
     private val history = mutableListOf<Pair<String, List<String>>>()
 
@@ -20,6 +23,11 @@ class HistoryActivity : AppCompatActivity() {
         // Инициализация элементов
         clearHistoryButton = findViewById(R.id.clearHistoryButton)
         historyListView = findViewById(R.id.historyListView)
+        backButton = findViewById(R.id.backButton)
+
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
 
         // Получаем данные из Intent
         val gameHistory = intent.getSerializableExtra("gameHistory") as? List<Pair<String, List<String>>>
@@ -31,9 +39,16 @@ class HistoryActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, history.map { it.first })
         historyListView.adapter = adapter
 
+
         // Очистка истории
         clearHistoryButton.setOnClickListener {
             history.clear()
+
+            val intent = Intent(this, MainActivity::class.java)
+
+            intent.putExtra("gameHistory", ArrayList(gameHistory)) // Передаём полную историю
+            startActivity(intent)
+            finish()
             adapter.clear()
             adapter.notifyDataSetChanged()
         }
@@ -45,5 +60,6 @@ class HistoryActivity : AppCompatActivity() {
             intent.putExtra("gameDetails", ArrayList(selectedGame.second))
             startActivity(intent)
         }
+
     }
 }
