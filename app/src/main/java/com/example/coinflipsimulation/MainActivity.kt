@@ -2,7 +2,6 @@ package com.example.coinflipsimulation
 
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,13 +26,11 @@ class MainActivity : AppCompatActivity() {
 
     // История игр: хранит название игры и подробности каждого броска
     private val gameHistory = mutableListOf<Pair<String, List<String>>>()
-    private lateinit var mediaPlayer: MediaPlayer
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mediaPlayer = MediaPlayer.create(this, R.raw.coin_sound)
+
         // Инициализация Views
         resultText = findViewById(R.id.resultText)
         coinImage = findViewById(R.id.coinImage)
@@ -44,30 +40,20 @@ class MainActivity : AppCompatActivity() {
 
         flipButton.setOnClickListener {
             flipCoin()
-
-            mediaPlayer.start()
         }
 
         historyButton.setOnClickListener {
-
+            // Переход в Activity для просмотра истории
             val intent = Intent(this, HistoryActivity::class.java)
             intent.putExtra("gameHistory", ArrayList(gameHistory)) // Передаём полную историю
             startActivity(intent)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer.release()
-
-    }
-
     private fun flipCoin() {
         val count = inputCount.text.toString().toIntOrNull() ?: 1
         var headsCount = 0
         var tailsCount = 0
-
-
 
         val results = mutableListOf<String>()
         for (i in 1..count) {

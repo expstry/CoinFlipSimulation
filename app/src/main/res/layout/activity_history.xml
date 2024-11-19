@@ -3,39 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background1"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp">
+    <!-- Кнопка для очистки истории -->
+    <Button
+        android:id="@+id/clearHistoryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Очистить историю"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp" />
 
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/circle_border"
-            android:onClick="onBackPressed"
-            android:text="Назад" />
-
-        <Button
-            android:id="@+id/clearHistoryButton"
-            android:layout_width="174dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="230dp"
-            android:background="@drawable/circle_border"
-            android:text="Очистить историю" />
-    </FrameLayout>
-
+    <!-- Список истории игр -->
     <ListView
         android:id="@+id/historyListView"
         android:layout_width="match_parent"
-        android:layout_height="599dp"
-        android:background="@drawable/square_border"
+        android:layout_height="match_parent"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"
         android:padding="16dp" />
-
-
 </LinearLayout>
