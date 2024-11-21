@@ -3,23 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background1"
     android:padding="16dp">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp">
 
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/circle_border"
-            android:onClick="onBackPressed"
-            android:text="Назад" />
-    </FrameLayout>
     <ListView
         android:id="@+id/gameDetailsListView"
         android:layout_width="match_parent"
-        android:layout_height="652dp"
-        android:background="@drawable/square_border" />
+        android:layout_height="match_parent" />
 </LinearLayout>
