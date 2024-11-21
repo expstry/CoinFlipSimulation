@@ -12,6 +12,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
 
+
+object GlobalVariables {
+    val gameHistory = mutableListOf<Pair<String, List<String>>>()
+}
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var resultText: TextView
@@ -24,8 +29,12 @@ class MainActivity : AppCompatActivity() {
     private val tailsDrawableId = R.drawable.coin_tail
     private val handler = Handler(Looper.getMainLooper())
 
+
+    private lateinit var mediaPlayer: MediaPlayer
+
     // История игр: хранит название игры и подробности каждого броска
     private val gameHistory = mutableListOf<Pair<String, List<String>>>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         historyButton.setOnClickListener {
             // Переход в Activity для просмотра истории
             val intent = Intent(this, HistoryActivity::class.java)
-            intent.putExtra("gameHistory", ArrayList(gameHistory)) // Передаём полную историю
+            intent.putExtra("gameHistory", ArrayList(GlobalVariables.gameHistory)) // Передаём полную историю
             startActivity(intent)
         }
     }
@@ -71,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         this.resultText.text = resultText
 
         // Сохраняем игру и её результаты в историю
-        gameHistory.add(Pair(resultText, results))
+        GlobalVariables.gameHistory.add(Pair(resultText, results))
 
         // Анимация монеты
         coinImage.setBackgroundResource(R.drawable.coin_flip_animation)
