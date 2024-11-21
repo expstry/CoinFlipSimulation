@@ -7,14 +7,11 @@ import android.widget.Button
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 
-
-
 class HistoryActivity : AppCompatActivity() {
 
     private lateinit var clearHistoryButton: Button
     private lateinit var backButton: Button
     private lateinit var historyListView: ListView
-    private val history = mutableListOf<Pair<String, List<String>>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,33 +26,21 @@ class HistoryActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        // Получаем данные из Intent
-        val gameHistory = intent.getSerializableExtra("gameHistory") as? List<Pair<String, List<String>>>
-        if (gameHistory != null) {
-            history.addAll(gameHistory)
-        }
-
         // Настройка адаптера для списка истории
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, history.map { it.first })
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, GlobalVariables.gameHistory.map { it.first })
         historyListView.adapter = adapter
 
 
         // Очистка истории
         clearHistoryButton.setOnClickListener {
-            history.clear()
-
-            val intent = Intent(this, MainActivity::class.java)
-
-            intent.putExtra("gameHistory", ArrayList(gameHistory)) // Передаём полную историю
-            startActivity(intent)
-            finish()
+            GlobalVariables.gameHistory.clear()
             adapter.clear()
             adapter.notifyDataSetChanged()
         }
 
         // Открытие деталей игры
         historyListView.setOnItemClickListener { _, _, position, _ ->
-            val selectedGame = history[position]
+            val selectedGame = GlobalVariables.gameHistory[position]
             val intent = Intent(this, GameDetailsActivity::class.java)
             intent.putExtra("gameDetails", ArrayList(selectedGame.second))
             startActivity(intent)
