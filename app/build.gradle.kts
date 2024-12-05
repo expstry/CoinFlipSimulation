@@ -3,6 +3,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
+
+
+
+
 android {
     namespace = "com.example.coinflipsimulation"
     compileSdk = 35
@@ -19,6 +23,8 @@ android {
             useSupportLibrary = true
         }
     }
+
+
 
     buildTypes {
         release {
@@ -57,7 +63,8 @@ android {
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    
+    implementation ("com.google.code.gson:gson:2.10.1")
+
     implementation("androidx.appcompat:appcompat:1.7.0")
 
     // Основные зависимости для Compose

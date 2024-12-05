@@ -1,7 +1,9 @@
 package com.example.coinflipsimulation
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,12 +12,39 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlin.random.Random
 
-
 object GlobalVariables {
+    private const val GAME_HISTORY_KEY = "gameHistory"
+
     val gameHistory = mutableListOf<Pair<String, List<String>>>()
+
+    fun saveGameHistory(context: Context) {
+        val sharedPreferences = context.getSharedPreferences("CoinFlipApp", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val json = gson.toJson(gameHistory)
+        editor.putString(GAME_HISTORY_KEY, json)
+        editor.apply()
+    }
+
+    fun loadGameHistory(context: Context) {
+        val sharedPreferences = context.getSharedPreferences("CoinFlipApp", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val json = sharedPreferences.getString(GAME_HISTORY_KEY, null)
+        val type = object : TypeToken<MutableList<Pair<String, List<String>>>>() {}.type
+
+        if (json != null) {
+            val loadedHistory: MutableList<Pair<String, List<String>>> = gson.fromJson(json, type)
+            gameHistory.clear()
+            gameHistory.addAll(loadedHistory)
+        }
+    }
 }
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,18 +58,16 @@ class MainActivity : AppCompatActivity() {
     private val tailsDrawableId = R.drawable.coin_tail
     private val handler = Handler(Looper.getMainLooper())
 
-
     private lateinit var mediaPlayer: MediaPlayer
-
-    // История игр: хранит название игры и подробности каждого броска
-    private val gameHistory = mutableListOf<Pair<String, List<String>>>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Инициализация Views
+        GlobalVariables.loadGameHistory(this)
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.coin_sound)
         resultText = findViewById(R.id.resultText)
         coinImage = findViewById(R.id.coinImage)
         inputCount = findViewById(R.id.inputCount)
@@ -49,20 +76,31 @@ class MainActivity : AppCompatActivity() {
 
         flipButton.setOnClickListener {
             flipCoin()
+
+            mediaPlayer.start()
         }
 
         historyButton.setOnClickListener {
-            // Переход в Activity для просмотра истории
+
             val intent = Intent(this, HistoryActivity::class.java)
             intent.putExtra("gameHistory", ArrayList(GlobalVariables.gameHistory)) // Передаём полную историю
             startActivity(intent)
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        GlobalVariables.saveGameHistory(this)
+        mediaPlayer.release()
+
+    }
+
     private fun flipCoin() {
         val count = inputCount.text.toString().toIntOrNull() ?: 1
         var headsCount = 0
         var tailsCount = 0
+
+
 
         val results = mutableListOf<String>()
         for (i in 1..count) {
@@ -79,10 +117,9 @@ class MainActivity : AppCompatActivity() {
         val resultText = "Игра: $headsCount орлов, $tailsCount решек"
         this.resultText.text = resultText
 
-        // Сохраняем игру и её результаты в историю
         GlobalVariables.gameHistory.add(Pair(resultText, results))
 
-        // Анимация монеты
+        GlobalVariables.saveGameHistory(this)
         coinImage.setBackgroundResource(R.drawable.coin_flip_animation)
         coinImage.setImageResource(0)
 
@@ -92,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         handler.postDelayed({
             coinAnimation.stop()
             val finalResult = if (headsCount > tailsCount) headsDrawableId else tailsDrawableId
-            coinImage.setBackgroundResource(finalResult)  // Устанавливаем итоговый результат
+            coinImage.setBackgroundResource(finalResult)
         }, (coinAnimation.numberOfFrames * 50).toLong())
     }
 }

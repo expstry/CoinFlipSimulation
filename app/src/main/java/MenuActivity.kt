@@ -13,7 +13,6 @@ class MenuActivity : AppCompatActivity() {
 
         val startGameButton: Button = findViewById(R.id.startGameButton)
         startGameButton.setOnClickListener {
-            // Переход в MainActivity при нажатии на кнопку
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
